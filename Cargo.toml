@@ -1,6 +1,6 @@
 [package]
 name = "md-cp"
-version = "0.0.0"  # Ignored, use version from flake.nix
+version = "0.1.0"
 edition = "2024"
 
 [dependencies]

@@ -34,10 +34,6 @@
           cargoLock = {
             lockFile = ./Cargo.lock;
           };
-
-          # Inject version into Cargo at build time
-          #buildInputs = [ pkgs.rustPlatform.cargoSetupHook ];
-          #CARGO_PKG_VERSION = version;
         };
 
         devShells.default = pkgs.mkShell {
