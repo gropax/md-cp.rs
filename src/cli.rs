@@ -15,7 +15,7 @@ pub struct Cli {
         value_name = "TEMPLATE",
         help = "Path to the template file in Markdown.",
     )]
-    pub schema_file: PathBuf,
+    pub template_file: PathBuf,
 
     #[arg(
         value_name = "DOCUMENTS",

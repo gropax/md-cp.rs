@@ -1,8 +1,4 @@
-use directories_next::ProjectDirs;
-use std::env;
-use std::fs;
-use std::path::{Path, PathBuf};
-use tracing::{debug, error, info, warn};
+use std::path::PathBuf;
 use glob::glob;
 
 pub fn init_logging(quiet: bool, level: u8) {
@@ -37,3 +33,30 @@ pub fn expand_globs(patterns: &Vec<String>) -> Result<Vec<PathBuf>, glob::GlobEr
     Ok(files)
 }
 
+pub fn front_matter(input: &str) -> String {
+    // Must start with front matter delimiter
+    if !input.starts_with("---\n") && !input.starts_with("---\r\n") {
+        return String::new();
+    }
+
+    // Look for the second delimiter
+    let mut lines = input.lines();
+
+    // Skip the first "---"
+    lines.next();
+
+    let mut front = String::from("---\n");
+
+    for line in lines {
+        front.push_str(line);
+        front.push('\n');
+
+        if line.trim() == "---" {
+            // Found the closing delimiter → valid FM
+            return front;
+        }
+    }
+
+    // No closing "---" → invalid front matter
+    String::new()
+}
