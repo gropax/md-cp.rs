@@ -16,28 +16,15 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-
-        appName = "md-cp";
-        version = "0.1.0";
       in
       {
-        packages.default = pkgs.rustPlatform.buildRustPackage {
-          pname = appName;
-          version = version;
-
-          meta = {
-            description = "Rust CLI app to overwrite Markdown file content without erasing frontmatter";
-          };
-
+        packages.default = pkgs.callPackage ./nix/pkg.nix {
+          inherit pkgs;
           src = pkgs.lib.cleanSource ./.;  # Prevent rebuilding after modifying non source file
-
-          cargoLock = {
-            lockFile = ./Cargo.lock;
-          };
         };
 
         devShells.default = pkgs.mkShell {
-          name = appName;
+          name = "md-cp";
 
           buildInputs = with pkgs; [
             rustc
@@ -54,7 +41,7 @@
 
         apps.default = {
           type = "app";
-          program = "${self.packages.${system}.default}/bin/${appName}";
+          program = "${self.packages.${system}.default}/bin/md-cp";
         };
       }
     );
